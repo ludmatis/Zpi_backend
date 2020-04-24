@@ -20,4 +20,8 @@ public class PersonService {
     public List<Person> getAll(){
         return (List<Person>) personRepository.findAll();
     }
+
+    public Person getByID(Integer id){
+        return personRepository.findById(id).get();
+    }
 }

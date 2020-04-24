@@ -5,6 +5,8 @@ import com.zpi.zpibackend.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class RoleService {
 
@@ -14,4 +16,11 @@ public class RoleService {
     public Role addRole(Role role){
         return roleRepository.save(role);
     }
+    public List<Role> getAll(){
+        return (List<Role>) roleRepository.findAll();
+    }
+    public Role getById(Integer id){
+        return roleRepository.findById(id).get();
+    }
+
 }

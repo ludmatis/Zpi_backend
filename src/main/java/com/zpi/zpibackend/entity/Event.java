@@ -7,6 +7,8 @@ import java.util.List;
 public class Event {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(columnDefinition = "serial")
     private Integer eventid;
     @ManyToOne
     @JoinColumn(name = "creatorid")

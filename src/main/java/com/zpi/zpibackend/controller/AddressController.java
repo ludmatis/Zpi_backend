@@ -12,9 +12,7 @@ import com.zpi.zpibackend.service.AddressService;
 import com.zpi.zpibackend.service.EventService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +35,11 @@ public class AddressController {
         List<Address> addresses = addressService.getAll();
         return addresses.stream().map(this::convertToDto).collect(Collectors.toList());
     }
-
+    @PostMapping("/address")
+    @ResponseBody
+    Address addAddress(@RequestBody AddressDto newAddressDto) {
+        return addressService.add(modelMapper.map(newAddressDto, Address.class));
+    }
     private AddressDto convertToDto(Address address){
         return modelMapper.map(address, AddressDto.class);
     }
