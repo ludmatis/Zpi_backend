@@ -4,7 +4,6 @@ import com.zpi.zpibackend.entity.*;
 import com.zpi.zpibackend.entity.composite_key.CompanyAddressId;
 import com.zpi.zpibackend.entity.composite_key.EventPersonId;
 import com.zpi.zpibackend.service.*;
-import org.hibernate.validator.constraints.URL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -53,7 +52,7 @@ public class ZpiBackendApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		roleService.addRole(new Role(2,"Zarządca"));
+		roleService.add(new Role(2,"Zarządca"));
 		CompanyType companyType = new CompanyType(2,"ochrona");
 		companyTypeService.add(companyType);
 		companyService.add(new Company(1,companyType, "firma", "email","ok","ok"));
@@ -81,7 +80,7 @@ public class ZpiBackendApplication implements CommandLineRunner {
 		scheduleService.add(schedule);
 		scheduleDetailService.add(new ScheduleDetail(1,schedule,new Date(12321,1,23), new Date(3231,1,1), "jakis"));
 		Role role = new Role(3, "ochroniarz");
-		roleService.addRole(role);
+		roleService.add(role);
 		eventPersonService.add(new EventPerson(new EventPersonId(1,1), role));
 
 		CostOrganizer costOrganizer = new CostOrganizer(1,event, "tytuł", new Date(2323,2,2));

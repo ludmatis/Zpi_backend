@@ -20,4 +20,14 @@ public class EventDetailService {
     public List<EventDetail> getAll(){
         return (List<EventDetail>) eventDetailRepository.findAll();
     }
+
+    public EventDetail getById(Integer id){
+        return eventDetailRepository.findById(id).orElse(null);
+    }
+
+    public EventDetail update(EventDetail eventDetail){
+        return eventDetailRepository.save(eventDetail);
+    }
+
+
 }

@@ -20,4 +20,13 @@ public class ToDoListTaskService {
     public List<ToDoListTask> getAll(){
         return (List<ToDoListTask>) toDoListTaskRepository.findAll();
     }
+
+    public ToDoListTask getById(Integer id){
+        return toDoListTaskRepository.findById(id).orElse(null);
+    }
+
+    public ToDoListTask update(ToDoListTask toDoListTask){
+        return toDoListTaskRepository.save(toDoListTask);
+    }
+
 }

@@ -20,4 +20,13 @@ public class CostElementService {
     public List<CostElement> getAll(){
         return (List<CostElement>) costElementRepository.findAll();
     }
+
+    public CostElement getById(Integer id){
+        return costElementRepository.findById(id).orElse(null);
+    }
+
+    public CostElement update(CostElement costElement){
+        return costElementRepository.save(costElement);
+    }
+
 }

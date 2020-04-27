@@ -20,4 +20,13 @@ public class CostOrganizerService {
     public List<CostOrganizer> getAll(){
         return (List<CostOrganizer>) costOrganizerRepository.findAll();
     }
+
+    public CostOrganizer getById(Integer id){
+        return costOrganizerRepository.findById(id).orElse(null);
+    }
+
+    public CostOrganizer update(CostOrganizer costOrganizer){
+        return costOrganizerRepository.save(costOrganizer);
+    }
+
 }

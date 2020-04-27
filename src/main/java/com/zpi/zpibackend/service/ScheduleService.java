@@ -20,4 +20,12 @@ public class ScheduleService {
     public List<Schedule> getAll(){
         return (List<Schedule>) scheduleRepository.findAll();
     }
+
+    public Schedule getById(Integer id){
+        return scheduleRepository.findById(id).orElse(null);
+    }
+    public Schedule update(Schedule schedule){
+        return scheduleRepository.save(schedule);
+    }
+
 }

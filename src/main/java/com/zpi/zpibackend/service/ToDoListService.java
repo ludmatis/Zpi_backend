@@ -20,4 +20,13 @@ public class ToDoListService {
     public List<ToDoList> getAll(){
         return (List<ToDoList>) toDoListRepository.findAll();
     }
+
+    public ToDoList getById(Integer id){
+        return toDoListRepository.findById(id).orElse(null);
+    }
+
+    public ToDoList update(ToDoList toDoList){
+        return toDoListRepository.save(toDoList);
+    }
+
 }

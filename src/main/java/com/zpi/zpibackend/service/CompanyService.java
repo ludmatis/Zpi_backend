@@ -21,7 +21,11 @@ public class CompanyService {
         return (List<Company>) companyRepository.findAll();
     }
 
-    public Company get(Integer id){
-        return companyRepository.findById(id).get();
+    public Company getById(Integer id){
+        return companyRepository.findById(id).orElse(null);
     }
+    public Company update(Company company){
+        return companyRepository.save(company);
+    }
+
 }

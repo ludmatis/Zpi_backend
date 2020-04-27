@@ -20,4 +20,13 @@ public class MessageService {
     public List<Message> getAll(){
         return (List<Message>) messageRepository.findAll();
     }
+
+    public Message getById(Integer id){
+        return messageRepository.findById(id).orElse(null);
+    }
+
+    public Message update(Message message){
+        return messageRepository.save(message);
+    }
+
 }

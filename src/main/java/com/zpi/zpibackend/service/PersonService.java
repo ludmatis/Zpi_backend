@@ -22,6 +22,14 @@ public class PersonService {
     }
 
     public Person getByID(Integer id){
-        return personRepository.findById(id).get();
+        return personRepository.findById(id).orElse(null);
     }
+
+    public Person getByEmail(String email){
+        return personRepository.findByEmail(email).orElse(null);
+    }
+    public Person updatePerson(Person person){
+        return personRepository.save(person);
+    }
+
 }

@@ -13,14 +13,18 @@ public class RoleService {
     @Autowired
     private RoleRepository roleRepository;
 
-    public Role addRole(Role role){
+    public Role add(Role role){
         return roleRepository.save(role);
     }
     public List<Role> getAll(){
         return (List<Role>) roleRepository.findAll();
     }
     public Role getById(Integer id){
-        return roleRepository.findById(id).get();
+        return roleRepository.findById(id).orElse(null);
+    }
+
+    public Role update(Role role){
+        return roleRepository.save(role);
     }
 
 }

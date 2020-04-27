@@ -20,4 +20,12 @@ public class CompanyAddressService {
     public List<CompanyAddress> getAll(){
         return (List<CompanyAddress>) companyAddressRepository.findAll();
     }
+
+    public CompanyAddress getById(Integer id){
+        return companyAddressRepository.findById(id).orElse(null);
+    }
+    public CompanyAddress update(CompanyAddress companyAddress){
+        return  companyAddressRepository.save(companyAddress);
+    }
+
 }

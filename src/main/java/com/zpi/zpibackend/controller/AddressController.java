@@ -35,6 +35,7 @@ public class AddressController {
         List<Address> addresses = addressService.getAll();
         return addresses.stream().map(this::convertToDto).collect(Collectors.toList());
     }
+
     @PostMapping("/address")
     @ResponseBody
     Address addAddress(@RequestBody AddressDto newAddressDto) {

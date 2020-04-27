@@ -20,4 +20,12 @@ public class CompanyTypeService {
     public List<CompanyType> getAll(){
         return (List<CompanyType>) companyTypeRepository.findAll();
     }
+
+    public CompanyType getById(Integer id){
+        return companyTypeRepository.findById(id).orElse(null);
+    }
+    public CompanyType update(CompanyType companyType){
+        return companyTypeRepository.save(companyType);
+    }
+
 }

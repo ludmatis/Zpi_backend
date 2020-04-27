@@ -20,4 +20,12 @@ public class AddressService {
     public List<Address> getAll(){
         return (List<Address>) addressRepository.findAll();
     }
+
+    public Address getById(Integer id){
+        return addressRepository.findById(id).orElse(null);
+    }
+
+    public Address update(Address address){
+        return addressRepository.save(address);
+    }
 }

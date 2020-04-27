@@ -13,16 +13,21 @@ public class EventService {
     @Autowired
     private EventRepository eventRepository;
 
-    public Event add(Event event){
+    public Event add(Event event) {
         return eventRepository.save(event);
     }
 
-    public Event get(Integer id){
-        return eventRepository.findById(id).get();
+
+    public List<Event> getAll() {
+        return (List<Event>) eventRepository.findAll();
     }
 
-    public List<Event> getAll(){
-        return (List<Event>) eventRepository.findAll();
+    public Event getById(Integer id) {
+        return eventRepository.findById(id).orElse(null);
+    }
+
+    public Event update(Event event) {
+        return eventRepository.save(event);
     }
 
 }
