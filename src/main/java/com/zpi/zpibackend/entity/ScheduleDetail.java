@@ -1,15 +1,14 @@
 package com.zpi.zpibackend.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity(name = "scheduledetail")
 public class ScheduleDetail {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(columnDefinition = "serial")
     private Integer scheduledetailid;
     @ManyToOne
     @JoinColumn(name = "scheduleid")

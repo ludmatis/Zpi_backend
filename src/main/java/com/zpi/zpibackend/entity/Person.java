@@ -1,14 +1,14 @@
 package com.zpi.zpibackend.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.List;
 
 @Entity(name = "person")
 public class Person {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(columnDefinition = "serial")
     private Integer personid;
     private String email;
     private String password;

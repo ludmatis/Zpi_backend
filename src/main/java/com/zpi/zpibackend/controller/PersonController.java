@@ -62,7 +62,7 @@ public class PersonController {
             return ResponseEntity.badRequest().body("Podany email jest zajęty");
         }
         else{
-            return new ResponseEntity<>(personDto, HttpStatus.OK);
+            return new ResponseEntity<>(convertToDto(person), HttpStatus.OK);
         }
     }
     @PutMapping("/update")

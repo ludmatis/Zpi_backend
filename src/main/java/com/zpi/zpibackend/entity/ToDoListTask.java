@@ -1,15 +1,14 @@
 package com.zpi.zpibackend.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity(name = "todolisttask")
 public class ToDoListTask {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(columnDefinition = "serial")
     private Integer taskid;
     @ManyToOne
     @JoinColumn(name = "todolistid")

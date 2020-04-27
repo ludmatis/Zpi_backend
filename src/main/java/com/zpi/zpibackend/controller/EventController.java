@@ -53,6 +53,21 @@ public class EventController {
             return new ResponseEntity<>(convertToDto(event), HttpStatus.OK);
         }
     }
+    @GetMapping("/getbycreator/{id}")
+    public ResponseEntity getEventsByCreatorid(@PathVariable Integer id){
+        Person person = personService.getByID(id);
+        if(person == null){
+            return ResponseEntity.badRequest().body("Użytkownik nie istnieje");
+        }
+        else{
+            List<Event> events = eventService.getByCreator(person);
+            if(events == null){
+                return ResponseEntity.badRequest().body("Użytkownik nie ma eventów");
+            }
+            List<EventDto> eventDtos = events.stream().map(this::convertToDto).collect(Collectors.toList());
+            return new ResponseEntity<>(eventDtos, HttpStatus.OK);
+        }
+    }
 
     @PostMapping("/add")
     public ResponseEntity add(@RequestBody EventDto eventDto) {
@@ -82,11 +97,17 @@ public class EventController {
         return modelMapper.map(event, EventDto.class);
     }
     private Event convertFromDto(EventDto eventDto){
-        Person person = personService.getByID(eventDto.getCreator().getPersonid());
-        Address address = addressService.getById(eventDto.getAddress().getAddressid());
         Event event = modelMapper.map(eventDto, Event.class);
-        event.setCreator(person);
-        event.setAddress(address);
+        Person person;
+        Address address;
+        if(eventDto.getCreator() != null){
+             person = personService.getByID(eventDto.getCreator().getPersonid());
+             event.setCreator(person);
+        }
+        if(eventDto.getAddress() != null){
+             address =  addressService.getById(eventDto.getAddress().getAddressid());
+            event.setAddress(address);
+        }
         return event;
     }
 }

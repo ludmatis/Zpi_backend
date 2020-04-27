@@ -7,6 +7,8 @@ import java.util.List;
 public class ToDoList {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(columnDefinition = "serial")
     private Integer todolistid;
     @ManyToOne
     @JoinColumn(name = "eventid")

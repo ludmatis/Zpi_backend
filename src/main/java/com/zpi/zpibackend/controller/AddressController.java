@@ -51,7 +51,7 @@ public class AddressController {
         if(addressService.add(address) == null){
             return ResponseEntity.badRequest().body("Cos poszlo nie tak przy dodawaniu");
         }
-        return new ResponseEntity<>(addressDto, HttpStatus.OK);
+        return new ResponseEntity<>(convertToDto(address), HttpStatus.OK);
     }
 
     @PutMapping("/update")

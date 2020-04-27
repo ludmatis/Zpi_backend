@@ -1,14 +1,13 @@
 package com.zpi.zpibackend.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 @Entity(name = "eventdetail")
 public class EventDetail {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(columnDefinition = "serial")
     private Integer eventdetailid;
     @ManyToOne
     @JoinColumn(name = "eventid")

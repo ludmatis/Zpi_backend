@@ -7,6 +7,8 @@ import java.util.List;
 public class CostElement {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(columnDefinition = "serial")
     private Integer costelementid;
     @ManyToOne
     @JoinColumn(name = "organizerid")

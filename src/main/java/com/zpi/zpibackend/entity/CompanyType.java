@@ -1,14 +1,14 @@
 package com.zpi.zpibackend.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.List;
 
 @Entity(name = "companytype")
 public class CompanyType {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(columnDefinition = "serial")
     private Integer companytypeid;
     private String type;
     @OneToMany(mappedBy = "companyType")

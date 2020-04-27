@@ -6,6 +6,8 @@ import javax.persistence.*;
 public class Company {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(columnDefinition = "serial")
     private Integer companyid;
     @ManyToOne
     @JoinColumn(name = "companytypeid")
