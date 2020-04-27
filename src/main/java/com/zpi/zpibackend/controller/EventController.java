@@ -1,9 +1,12 @@
 package com.zpi.zpibackend.controller;
 
+import com.zpi.zpibackend.entity.Address;
 import com.zpi.zpibackend.entity.Event;
 import com.zpi.zpibackend.entity.Person;
 import com.zpi.zpibackend.entity.dto.EventDto;
+import com.zpi.zpibackend.entity.dto.PersonDto;
 import com.zpi.zpibackend.repository.EventRepository;
+import com.zpi.zpibackend.service.AddressService;
 import com.zpi.zpibackend.service.EventService;
 import com.zpi.zpibackend.service.PersonService;
 import org.modelmapper.ModelMapper;
@@ -18,26 +21,60 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/event")
 public class EventController {
-    @Autowired
-    private EventRepository eventRepository;
 
     @Autowired
     private EventService eventService;
     @Autowired
     private PersonService personService;
-
+    @Autowired
+    private AddressService addressService;
     @Autowired
     private ModelMapper modelMapper;
 
     @GetMapping("/all")
-    public List<EventDto> getAll(){
+    public ResponseEntity getAll(){
         List<Event> events = eventService.getAll();
-        return events.stream().map(this::convertToDto).collect(Collectors.toList());
+        if(events.isEmpty()){
+            return ResponseEntity.badRequest().body("Brak wydarzen w bazie");
+        }
+        else{
+            List<EventDto> eventDtos =  events.stream().map(this::convertToDto).collect(Collectors.toList());
+            return new ResponseEntity<>(eventDtos, HttpStatus.OK);
+        }
     }
-    @PostMapping("/event")
-    @ResponseBody
-    Event addEntity(@RequestBody EventDto newEventDto) {
-        return eventService.add(modelMapper.map(newEventDto, Event.class));
+
+    @GetMapping("/get/{id}")
+    public ResponseEntity getEventById(@PathVariable Integer id){
+        Event event = eventService.getById(id);
+        if(event == null){
+            return ResponseEntity.badRequest().body("Event nie istnieje");
+        }
+        else {
+            return new ResponseEntity<>(convertToDto(event), HttpStatus.OK);
+        }
+    }
+
+    @PostMapping("/add")
+    public ResponseEntity add(@RequestBody EventDto eventDto) {
+        Event event = convertFromDto(eventDto);
+        if(eventService.add(event) == null){
+            return ResponseEntity.badRequest().body("Cos poszlo nie tak przy dodawaniu");
+        }
+        else {
+            return new ResponseEntity<>(convertToDto(event), HttpStatus.OK);
+        }
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity updateEvent(@RequestBody EventDto eventDto){
+        Event event = eventService.getById(eventDto.getEventid());
+        if(event == null){
+            return ResponseEntity.badRequest().body("Event nie istnieje");
+        }
+        else {
+            eventService.update(convertFromDto(eventDto));
+            return new ResponseEntity<>(eventDto, HttpStatus.OK);
+        }
     }
 
 
@@ -45,11 +82,11 @@ public class EventController {
         return modelMapper.map(event, EventDto.class);
     }
     private Event convertFromDto(EventDto eventDto){
-        Person person= personService.getByID(eventDto.getCreator().getPersonid());
-        List<Event> evList =  person.getEvents();
+        Person person = personService.getByID(eventDto.getCreator().getPersonid());
+        Address address = addressService.getById(eventDto.getAddress().getAddressid());
         Event event = modelMapper.map(eventDto, Event.class);
-        evList.add(event);
-        person.setEvents(evList);
+        event.setCreator(person);
+        event.setAddress(address);
         return event;
     }
 }

@@ -12,6 +12,8 @@ import com.zpi.zpibackend.service.AddressService;
 import com.zpi.zpibackend.service.EventService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -30,17 +32,38 @@ public class AddressController {
     @Autowired
     private ModelMapper modelMapper;
 
-    @GetMapping("/all")
-    public List<AddressDto> getAll(){
+    @GetMapping("/get")
+    public ResponseEntity getAll(){
         List<Address> addresses = addressService.getAll();
-        return addresses.stream().map(this::convertToDto).collect(Collectors.toList());
+        if(addresses.isEmpty()){
+            return ResponseEntity.badRequest().body("Brak adresów w bazie");
+        }
+        else{
+            List<AddressDto> addressDtos =  addresses.stream().map(this::convertToDto).collect(Collectors.toList());
+            return new ResponseEntity<>(addressDtos, HttpStatus.OK);
+        }
     }
 
-    @PostMapping("/address")
-    @ResponseBody
-    Address addAddress(@RequestBody AddressDto newAddressDto) {
-        return addressService.add(modelMapper.map(newAddressDto, Address.class));
+
+    @PostMapping("/add")
+    public ResponseEntity addAddress(@RequestBody AddressDto addressDto) {
+        Address address = convertFromDto(addressDto);
+        if(addressService.add(address) == null){
+            return ResponseEntity.badRequest().body("Cos poszlo nie tak przy dodawaniu");
+        }
+        return new ResponseEntity<>(addressDto, HttpStatus.OK);
     }
+
+    @PutMapping("/update")
+    public ResponseEntity updateAddress(@RequestBody AddressDto addressDto){
+        Address address = addressService.getById(addressDto.getAddressid());
+        if(address == null){
+            return ResponseEntity.badRequest().body("Podany adres nie istnieje");
+        }
+        addressService.update(convertFromDto(addressDto));
+        return new ResponseEntity<>(addressDto, HttpStatus.OK);
+    }
+
     private AddressDto convertToDto(Address address){
         return modelMapper.map(address, AddressDto.class);
     }

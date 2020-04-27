@@ -8,10 +8,10 @@ import com.zpi.zpibackend.service.CompanyService;
 import com.zpi.zpibackend.service.CompanyTypeService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,9 +29,26 @@ public class CompanyTypeController {
     private ModelMapper modelMapper;
 
     @GetMapping("/all")
-    public List<CompanyTypeDto> getAll(){
+    public ResponseEntity getAll(){
         List<CompanyType> companyTypes = companyTypeService.getAll();
-        return  companyTypes.stream().map(this::convertToDto).collect(Collectors.toList());
+        if(companyTypes.isEmpty()){
+            return ResponseEntity.badRequest().body("Brak typów firm w bazie");
+        }
+        else{
+            List<CompanyTypeDto> companyTypeDtos = companyTypes.stream().map(this::convertToDto).collect(Collectors.toList());
+            return new ResponseEntity<>(companyTypeDtos, HttpStatus.OK);
+        }
+    }
+
+    @PostMapping("/add")
+    public ResponseEntity addCompanyType(@RequestBody CompanyTypeDto companyTypeDto){
+        CompanyType companyType = convertFromDto(companyTypeDto);
+        if(companyTypeService.add(companyType) == null){
+            return ResponseEntity.badRequest().body("Cos poszlo nie tak przy dodawaniu");
+        }
+        else {
+            return new ResponseEntity<>(companyTypeDto, HttpStatus.OK);
+        }
     }
 
     private CompanyTypeDto convertToDto(CompanyType companyType){

@@ -27,13 +27,13 @@ public class PersonController {
     @Autowired
     private ModelMapper modelMapper;
 
-    @GetMapping("/all")
+    @GetMapping("/get")
     public List<PersonDto> getAll(){
         List<Person> people = personService.getAll();
         return people.stream().map(this::convertToDto).collect(Collectors.toList());
     }
 
-    @GetMapping("/person/{id}")
+    @GetMapping("/get/{id}")
     public ResponseEntity getPersonById(@PathVariable Integer id){
         Person person = personService.getByID(id);
         if(person == null){
@@ -41,7 +41,8 @@ public class PersonController {
         }
         else return new ResponseEntity<>(convertToDto(person),HttpStatus.OK);
     }
-    @GetMapping("/getperson/{email}/{password}")
+
+    @GetMapping("/get/{email}/{password}")
     public ResponseEntity getPersonByEmailAndPassword(@PathVariable String email, @PathVariable String password){
         Person person = personService.getByEmail(email);
         Gson gson = new Gson();
@@ -54,9 +55,9 @@ public class PersonController {
         else return ResponseEntity.badRequest().body("Złe hasło");
 
     }
-    @PostMapping("/addperson")
+    @PostMapping("/add")
     public ResponseEntity addPerson(@RequestBody PersonDto personDto){
-        Person person = modelMapper.map(personDto, Person.class);
+        Person person = convertFromDto(personDto);
         if(personService.getByEmail(person.getEmail()) != null){
             return ResponseEntity.badRequest().body("Podany email jest zajęty");
         }
@@ -64,15 +65,15 @@ public class PersonController {
             return new ResponseEntity<>(personDto, HttpStatus.OK);
         }
     }
-    @PutMapping("/updateperson")
+    @PutMapping("/update")
     public ResponseEntity updatePersonById(@RequestBody PersonDto personDto){
         Person person = personService.getByID(personDto.getPersonid());
         if(person == null){
             return ResponseEntity.badRequest().body("Podany użytkownik nie istnieje");
         }
         else{
-            Person updated = personService.updatePerson(convertFromDto(personDto));
-            return new ResponseEntity<>(convertToDto(updated), HttpStatus.OK);
+            personService.updatePerson(convertFromDto(personDto));
+            return new ResponseEntity<>(personDto, HttpStatus.OK);
         }
     }
     private PersonDto convertToDto(Person person){
