@@ -42,7 +42,12 @@ public class EventController {
             return new ResponseEntity<>(eventDtos, HttpStatus.OK);
         }
     }
-
+    /*@GetMapping("/get/creatorid/{id}")
+    public ResponseEntity getByCreatorID(@PathVariable Integer id){
+        List<Event> events = eventService.getByCreatorID(id);
+        List<EventDto> eventDtos =  events.stream().map(this::convertToDto).collect(Collectors.toList());
+        return new ResponseEntity<>(eventDtos, HttpStatus.OK);
+    }*/
     @GetMapping("/get/{id}")
     public ResponseEntity getEventById(@PathVariable Integer id){
         Event event = eventService.getById(id);
