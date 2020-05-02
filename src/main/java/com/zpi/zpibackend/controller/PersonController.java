@@ -65,9 +65,10 @@ public class PersonController {
             return new ResponseEntity<>(convertToDto(person), HttpStatus.OK);
         }
     }
-    @PutMapping("/update")
-    public ResponseEntity updatePersonById(@RequestBody PersonDto personDto){
-        Person person = personService.getByID(personDto.getPersonid());
+    @PutMapping("/update/{id}")
+    public ResponseEntity updatePersonById(@RequestBody PersonDto personDto, @PathVariable Integer id){
+        Person person = personService.getByID(id);
+        personDto.setPersonid(id);
         if(person == null){
             return ResponseEntity.badRequest().body("Podany użytkownik nie istnieje");
         }
