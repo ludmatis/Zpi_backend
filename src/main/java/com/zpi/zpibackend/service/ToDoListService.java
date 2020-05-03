@@ -1,5 +1,6 @@
 package com.zpi.zpibackend.service;
 
+import com.zpi.zpibackend.entity.Event;
 import com.zpi.zpibackend.entity.ToDoList;
 import com.zpi.zpibackend.repository.ToDoListRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,4 +30,5 @@ public class ToDoListService {
         return toDoListRepository.save(toDoList);
     }
 
+    public List<ToDoList> geByEvent(Event event) { return toDoListRepository.findByEvent(event);}
 }

@@ -1,5 +1,6 @@
 package com.zpi.zpibackend.service;
 
+import com.zpi.zpibackend.entity.ToDoList;
 import com.zpi.zpibackend.entity.ToDoListTask;
 import com.zpi.zpibackend.repository.ToDoListTaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,4 +30,5 @@ public class ToDoListTaskService {
         return toDoListTaskRepository.save(toDoListTask);
     }
 
+    public List<ToDoListTask> getByToDoList(ToDoList toDoList) { return toDoListTaskRepository.findByToDoList(toDoList); }
 }
