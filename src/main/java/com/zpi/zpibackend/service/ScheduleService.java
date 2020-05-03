@@ -1,5 +1,6 @@
 package com.zpi.zpibackend.service;
 
+import com.zpi.zpibackend.entity.Event;
 import com.zpi.zpibackend.entity.Schedule;
 import com.zpi.zpibackend.repository.ScheduleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,5 +28,7 @@ public class ScheduleService {
     public Schedule update(Schedule schedule){
         return scheduleRepository.save(schedule);
     }
-
+    public List<Schedule> getByEvent(Event event){
+        return scheduleRepository.findByEvent(event);
+    }
 }

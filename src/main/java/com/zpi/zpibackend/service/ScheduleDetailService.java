@@ -21,7 +21,9 @@ public class ScheduleDetailService {
     public List<ScheduleDetail> getAll(){
         return (List<ScheduleDetail>) scheduleDetailRepository.findAll();
     }
-
+    public List<ScheduleDetail> getBySchedule(Schedule schedule){
+        return scheduleDetailRepository.findBySchedule(schedule);
+    }
     public ScheduleDetail getById(Integer id){
         return scheduleDetailRepository.findById(id).orElse(null);
     }
