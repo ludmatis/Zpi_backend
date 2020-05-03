@@ -51,9 +51,10 @@ public class CompanyController {
         return new ResponseEntity<>(companyDto, HttpStatus.OK);
     }
 
-    @PutMapping("/updatecompany")
-    public ResponseEntity updateCompany(@RequestBody CompanyDto companyDto){
-        Company company = companyService.getById(companyDto.getCompanyid());
+    @PutMapping("/updatecompany/{id}")
+    public ResponseEntity updateCompany(@RequestBody CompanyDto companyDto, @PathVariable Integer id){
+        Company company = companyService.getById(id);
+        companyDto.setCompanyid(id);
         if(company == null){
             return ResponseEntity.badRequest().body("Firma nie istnieje");
         }

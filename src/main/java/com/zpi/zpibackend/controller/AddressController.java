@@ -54,9 +54,10 @@ public class AddressController {
         return new ResponseEntity<>(convertToDto(address), HttpStatus.OK);
     }
 
-    @PutMapping("/update")
-    public ResponseEntity updateAddress(@RequestBody AddressDto addressDto){
-        Address address = addressService.getById(addressDto.getAddressid());
+    @PutMapping("/update/{id}")
+    public ResponseEntity updateAddress(@RequestBody AddressDto addressDto, @PathVariable Integer id){
+        Address address = addressService.getById(id);
+        addressDto.setAddressid(id);
         if(address == null){
             return ResponseEntity.badRequest().body("Podany adres nie istnieje");
         }

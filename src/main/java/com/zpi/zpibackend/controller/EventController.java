@@ -85,15 +85,16 @@ public class EventController {
         }
     }
 
-    @PutMapping("/update")
-    public ResponseEntity updateEvent(@RequestBody EventDto eventDto){
-        Event event = eventService.getById(eventDto.getEventid());
+    @PutMapping("/update/{id}")
+    public ResponseEntity updateEvent(@RequestBody EventDto eventDto, @PathVariable Integer id){
+        Event event = eventService.getById(id);
+        eventDto.setEventid(id);
         if(event == null){
             return ResponseEntity.badRequest().body("Event nie istnieje");
         }
         else {
-            eventService.update(convertFromDto(eventDto));
-            return new ResponseEntity<>(eventDto, HttpStatus.OK);
+            Event updated = eventService.update(convertFromDto(eventDto));
+            return new ResponseEntity<>(convertToDto(updated), HttpStatus.OK);
         }
     }
 
