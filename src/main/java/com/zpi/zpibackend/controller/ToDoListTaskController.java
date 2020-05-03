@@ -70,7 +70,7 @@ public class ToDoListTaskController {
             return new ResponseEntity<>(convertToDto(toDoListTask),HttpStatus.OK);
     }
 
-    @PutMapping
+    @PutMapping("/update/{id}")
     public ResponseEntity updateToDoListTask(@RequestBody ToDoListTaskDto toDoListTaskDto, @PathVariable Integer id){
         ToDoListTask toDoListTask = toDoListTaskService.getById(id);
         toDoListTaskDto.setTaskid(id);
@@ -81,7 +81,6 @@ public class ToDoListTaskController {
             ToDoListTask updated = toDoListTaskService.update(convertFromDto(toDoListTaskDto));
             return new ResponseEntity<>(convertToDto(updated),HttpStatus.OK);
         }
-
     }
 
     private ToDoListTaskDto convertToDto(ToDoListTask toDoListTask){

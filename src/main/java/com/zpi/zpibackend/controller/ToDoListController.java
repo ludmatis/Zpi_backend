@@ -61,7 +61,6 @@ public class ToDoListController {
             List<ToDoListDto> toDoListDtos = toDoLists.stream().map(this::convertToDto).collect(Collectors.toList());
             return new ResponseEntity<>(toDoListDtos,HttpStatus.OK);
         }
-
     }
 
     @PostMapping("/add")
@@ -74,7 +73,7 @@ public class ToDoListController {
             return new ResponseEntity<>(convertToDto(toDoList),HttpStatus.OK);
     }
 
-    @PutMapping("/update")
+    @PutMapping("/update/{id}")
     public ResponseEntity updateToDoList(@RequestBody ToDoListDto toDoListDto, @PathVariable Integer id){
         ToDoList toDoList = toDoListService.getById(id);
         toDoListDto.setTodolistid(id);
@@ -84,7 +83,6 @@ public class ToDoListController {
             ToDoList updated =toDoListService.update(convertFromDto(toDoListDto));
             return new ResponseEntity<>(convertToDto(updated),HttpStatus.OK);
         }
-
     }
 
     public ToDoListDto convertToDto(ToDoList toDoList){
