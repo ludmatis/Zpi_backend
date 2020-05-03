@@ -71,14 +71,15 @@ public class ToDoListTaskController {
     }
 
     @PutMapping
-    public ResponseEntity updateToDoListTask(@RequestBody ToDoListTaskDto toDoListTaskDto){
-        ToDoListTask toDoListTask = toDoListTaskService.getById(toDoListTaskDto.getTaskid());
+    public ResponseEntity updateToDoListTask(@RequestBody ToDoListTaskDto toDoListTaskDto, @PathVariable Integer id){
+        ToDoListTask toDoListTask = toDoListTaskService.getById(id);
+        toDoListTaskDto.setTaskid(id);
         if(toDoListTask == null) {
             return ResponseEntity.badRequest().body("Zadanie nie istnieje");
         }
         else{
-            toDoListTaskService.update(convertFromDto(toDoListTaskDto));
-            return new ResponseEntity(toDoListTaskDto,HttpStatus.OK);
+            ToDoListTask updated = toDoListTaskService.update(convertFromDto(toDoListTaskDto));
+            return new ResponseEntity<>(convertToDto(updated),HttpStatus.OK);
         }
 
     }

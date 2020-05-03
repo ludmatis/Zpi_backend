@@ -75,13 +75,14 @@ public class ToDoListController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity updateToDoList(@RequestBody ToDoListDto toDoListDto){
-        ToDoList toDoList = toDoListService.getById(toDoListDto.getTodolistid());
+    public ResponseEntity updateToDoList(@RequestBody ToDoListDto toDoListDto, @PathVariable Integer id){
+        ToDoList toDoList = toDoListService.getById(id);
+        toDoListDto.setTodolistid(id);
         if(toDoList==null)
             return ResponseEntity.badRequest().body("Lista zadan nie istnieje");
         else{
-            toDoListService.update(convertFromDto(toDoListDto));
-            return new ResponseEntity<>(toDoListDto,HttpStatus.OK);
+            ToDoList updated =toDoListService.update(convertFromDto(toDoListDto));
+            return new ResponseEntity<>(convertToDto(updated),HttpStatus.OK);
         }
 
     }
