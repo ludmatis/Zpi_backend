@@ -2,8 +2,10 @@ package com.zpi.zpibackend.controller;
 
 import com.zpi.zpibackend.entity.Event;
 import com.zpi.zpibackend.entity.Schedule;
+import com.zpi.zpibackend.entity.ScheduleDetail;
 import com.zpi.zpibackend.entity.dto.ScheduleDto;
 import com.zpi.zpibackend.service.EventService;
+import com.zpi.zpibackend.service.ScheduleDetailService;
 import com.zpi.zpibackend.service.ScheduleService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,6 +23,8 @@ public class ScheduleController {
 
     @Autowired
     private ScheduleService scheduleService;
+    @Autowired
+    private ScheduleDetailService scheduleDetailService;
     @Autowired
     private EventService eventService;
     @Autowired
@@ -75,7 +80,7 @@ public class ScheduleController {
         return modelMapper.map(schedule, ScheduleDto.class);
     }
 
-    //TODO if entity constins list needs to be updated
+
     private Schedule convertFromDto(ScheduleDto scheduleDto) {
         Schedule schedule = modelMapper.map(scheduleDto, Schedule.class);
         Event event;
@@ -83,6 +88,15 @@ public class ScheduleController {
             event = eventService.getById(scheduleDto.getEvent().getEventid());
             schedule.setEvent(event);
         }
+
+        Integer scheduleId = scheduleDto.getScheduleid();
+        List<ScheduleDetail> allScheduleDetails = scheduleDetailService.getAll();
+        List<ScheduleDetail> exactScheduleDetails = new ArrayList<>();
+        allScheduleDetails.forEach(scheduleDetail -> {
+            if(scheduleDetail.getSchedule().getScheduleid()== scheduleId)
+                exactScheduleDetails.add(scheduleDetail);
+        });
+        schedule.setScheduleDetails(exactScheduleDetails);
         return schedule;
     }
 }

@@ -15,7 +15,7 @@ public class Schedule {
     private Event event;
     private String title;
     @OneToMany(mappedBy = "schedule")
-    List<ScheduleDetail> scheduleDetails;
+    private List<ScheduleDetail> scheduleDetails;
 
     public Schedule() {
     }
@@ -48,5 +48,13 @@ public class Schedule {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public List<ScheduleDetail> getScheduleDetails(){
+        return scheduleDetails;
+    }
+
+    public void setScheduleDetails(List<ScheduleDetail> scheduleDetails) {
+        this.scheduleDetails = scheduleDetails;
     }
 }

@@ -1,20 +1,17 @@
 package com.zpi.zpibackend.controller;
 
-import com.zpi.zpibackend.entity.Address;
-import com.zpi.zpibackend.entity.Event;
-import com.zpi.zpibackend.entity.Person;
+import com.zpi.zpibackend.entity.*;
 import com.zpi.zpibackend.entity.dto.EventDto;
 import com.zpi.zpibackend.entity.dto.PersonDto;
 import com.zpi.zpibackend.repository.EventRepository;
-import com.zpi.zpibackend.service.AddressService;
-import com.zpi.zpibackend.service.EventService;
-import com.zpi.zpibackend.service.PersonService;
+import com.zpi.zpibackend.service.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,6 +21,14 @@ public class EventController {
 
     @Autowired
     private EventService eventService;
+    @Autowired
+    private ToDoListService toDoListService;
+    @Autowired
+    private ScheduleService scheduleService;
+    @Autowired
+    private EventDetailService eventDetailService;
+    @Autowired
+    private CostOrganizerService costOrganizerService;
     @Autowired
     private PersonService personService;
     @Autowired
@@ -74,36 +79,38 @@ public class EventController {
         }
     }
 
-    @PostMapping("/add")
-    public ResponseEntity add(@RequestBody EventDto eventDto) {
-        Event event = convertFromDto(eventDto);
-        if(eventService.add(event) == null){
-            return ResponseEntity.badRequest().body("Cos poszlo nie tak przy dodawaniu");
+        @PostMapping("/add")
+        public ResponseEntity add(@RequestBody EventDto eventDto) {
+            Event event = convertFromDto(eventDto);
+            if(eventService.add(event) == null){
+                return ResponseEntity.badRequest().body("Cos poszlo nie tak przy dodawaniu");
+            }
+            else {
+                return new ResponseEntity<>(convertToDto(event), HttpStatus.OK);
+            }
         }
-        else {
-            return new ResponseEntity<>(convertToDto(event), HttpStatus.OK);
-        }
-    }
 
-    @PutMapping("/update/{id}")
-    public ResponseEntity updateEvent(@RequestBody EventDto eventDto, @PathVariable Integer id){
-        Event event = eventService.getById(id);
-        eventDto.setEventid(id);
-        if(event == null){
-            return ResponseEntity.badRequest().body("Event nie istnieje");
+        @PutMapping("/update/{id}")
+        public ResponseEntity updateEvent(@RequestBody EventDto eventDto, @PathVariable Integer id){
+            Event event = eventService.getById(id);
+            eventDto.setEventid(id);
+            if(event == null){
+                return ResponseEntity.badRequest().body("Event nie istnieje");
+            }
+            else {
+                Event updated = eventService.update(convertFromDto(eventDto));
+                return new ResponseEntity<>(convertToDto(updated), HttpStatus.OK);
+            }
         }
-        else {
-            Event updated = eventService.update(convertFromDto(eventDto));
-            return new ResponseEntity<>(convertToDto(updated), HttpStatus.OK);
-        }
-    }
 
 
     private EventDto convertToDto(Event event){
         return modelMapper.map(event, EventDto.class);
     }
+
     private Event convertFromDto(EventDto eventDto){
         Event event = modelMapper.map(eventDto, Event.class);
+
         Person person;
         Address address;
         if(eventDto.getCreator() != null){
@@ -114,6 +121,40 @@ public class EventController {
              address =  addressService.getById(eventDto.getAddress().getAddressid());
             event.setAddress(address);
         }
+
+        Integer eventId = eventDto.getEventid();
+        List<ToDoList> allToDoLists = toDoListService.getAll();
+        List<ToDoList> exactToDoLists = new ArrayList<>();
+        allToDoLists.forEach(toDoList -> {
+            if(toDoList.getEvent().getEventid()==eventId)
+                exactToDoLists.add(toDoList);
+        });
+        List<Schedule> allSchedules = scheduleService.getAll();
+        List<Schedule> exactSchedules = new ArrayList<>();
+        allSchedules.forEach(schedule -> {
+            if(schedule.getEvent().getEventid()==eventId)
+                exactSchedules.add(schedule);
+        });
+        List<EventDetail> allEventDetails = eventDetailService.getAll();
+        List<EventDetail> exactEventDetails = new ArrayList<>();
+        allEventDetails.forEach(eventDetail -> {
+            if(eventDetail.getEvent().getEventid()==eventId)
+                exactEventDetails.add(eventDetail);
+        });
+        List<CostOrganizer> allCostOrganizers = costOrganizerService.getAll();
+        List<CostOrganizer> exactCostOrganizers = new ArrayList<>();
+        allCostOrganizers.forEach(costOrganizer -> {
+            if(costOrganizer.getEvent().getEventid()==eventId)
+                exactCostOrganizers.add(costOrganizer);
+        });
+
+        event.setToDoLists(exactToDoLists);
+        event.setSchedules(exactSchedules);
+        event.setEventDetails(exactEventDetails);
+        event.setCostOrganizers(exactCostOrganizers);
+
         return event;
     }
+
+
 }

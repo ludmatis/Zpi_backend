@@ -87,7 +87,7 @@ public class ToDoListTaskController {
         return modelMapper.map(toDoListTask, ToDoListTaskDto.class);
     }
 
-    //TODO to update if entity owns a list of other entities
+
     private ToDoListTask convertFromDto(ToDoListTaskDto toDoListTaskDto){
        ToDoListTask toDoListTask = modelMapper.map(toDoListTaskDto, ToDoListTask.class);
        ToDoList toDoList;

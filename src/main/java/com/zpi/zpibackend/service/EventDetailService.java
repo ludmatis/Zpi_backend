@@ -1,5 +1,6 @@
 package com.zpi.zpibackend.service;
 
+import com.zpi.zpibackend.entity.Event;
 import com.zpi.zpibackend.entity.EventDetail;
 import com.zpi.zpibackend.repository.EventDetailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,4 +31,7 @@ public class EventDetailService {
     }
 
 
+    public List<EventDetail> getByEvent(Event event) {
+        return eventDetailRepository.findByEvent(event);
+    }
 }

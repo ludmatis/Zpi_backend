@@ -1,18 +1,19 @@
 package com.zpi.zpibackend.controller;
 
-import com.sun.xml.bind.v2.TODO;
 import com.zpi.zpibackend.entity.Event;
 import com.zpi.zpibackend.entity.ToDoList;
+import com.zpi.zpibackend.entity.ToDoListTask;
 import com.zpi.zpibackend.entity.dto.ToDoListDto;
 import com.zpi.zpibackend.service.ToDoListService;
 import com.zpi.zpibackend.service.EventService;
+import com.zpi.zpibackend.service.ToDoListTaskService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,6 +25,8 @@ public class ToDoListController {
     private ToDoListService toDoListService;
     @Autowired
     private EventService eventService;
+    @Autowired
+    private ToDoListTaskService toDoListTaskService;
     @Autowired
     private ModelMapper modelMapper;
 
@@ -66,6 +69,7 @@ public class ToDoListController {
     @PostMapping("/add")
     public ResponseEntity add(@RequestBody ToDoListDto toDoListDto){
         ToDoList toDoList = convertFromDto(toDoListDto);
+        System.out.println(toDoListDto.toString());
         if(toDoListService.add(toDoList)==null){
             return ResponseEntity.badRequest().body("Cos poszlo nie tak przy dodawaniu");
         }
@@ -89,14 +93,24 @@ public class ToDoListController {
         return modelMapper.map(toDoList, ToDoListDto.class);
     }
 
-    //TODO convertFromDto to update if entity owns a list
+    //
     public ToDoList convertFromDto(ToDoListDto toDoListDto){
         ToDoList toDoList = modelMapper.map(toDoListDto, ToDoList.class);
+
         Event event;
         if(toDoListDto.getEvent() !=null){
             event=eventService.getById(toDoListDto.getEvent().getEventid());
             toDoList.setEvent(event);
         }
+
+        List<ToDoListTask> allTasks = toDoListTaskService.getAll();
+        List<ToDoListTask> exactTasks = new ArrayList<>();
+        allTasks.forEach(task ->{
+            if(task.getToDoList().getTodolistid() == toDoListDto.getTodolistid())
+                exactTasks.add(task);
+        });
+        toDoList.setToDoListTasks(exactTasks);
+
         return toDoList;
     }
 }

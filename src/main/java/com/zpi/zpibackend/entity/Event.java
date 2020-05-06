@@ -96,4 +96,22 @@ public class Event {
     public void setSchedules(List<Schedule> schedules) {
         this.schedules = schedules;
     }
+
+    public List<EventDetail> getEventDetails() {
+        return eventDetails;
+    }
+
+    public void setEventDetails(List<EventDetail> eventDetails){
+        this.eventDetails=eventDetails;
+    }
+
+    public List<CostOrganizer> getCostOrganizers() {
+        return costOrganizers;
+    }
+
+    public void setCostOrganizers(List<CostOrganizer> costOrganizers){
+        this.costOrganizers = costOrganizers;
+    }
+
+
 }
