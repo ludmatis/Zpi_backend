@@ -76,6 +76,33 @@ public class ScheduleController {
             return new ResponseEntity<>(convertToDto(updated), HttpStatus.OK);
         }
     }
+
+    @PutMapping("/removescheduleitems/{id}")
+    public ResponseEntity removeScheduleItems(@PathVariable Integer id){
+        Schedule schedule = scheduleService.getById(id);
+        if(schedule == null){
+            return ResponseEntity.badRequest().body("Podany harmonogram nie istnieje");
+        }
+        else{
+            List<ScheduleDetail> scheduleDetails = scheduleDetailService.getAll();
+            List<ScheduleDetail> exactScheduleDetails = new ArrayList<>();
+            scheduleDetails.forEach(scheduleDetail -> {
+                if(scheduleDetail.getSchedule().getScheduleid() == id){
+                    exactScheduleDetails.add(scheduleDetail);
+                }
+            });
+            if(exactScheduleDetails.isEmpty()){
+                return ResponseEntity.badRequest().body("Lista szczegółów jest pusta, nie ma czego usuwać");
+            }
+            else{
+                exactScheduleDetails.forEach(scheduleDetail -> {
+                    scheduleDetailService.delete(scheduleDetail);
+                });
+                schedule.getScheduleDetails().clear();
+                return new ResponseEntity<>(convertToDto(schedule), HttpStatus.OK);
+            }
+        }
+    }
     private ScheduleDto convertToDto(Schedule schedule) {
         return modelMapper.map(schedule, ScheduleDto.class);
     }

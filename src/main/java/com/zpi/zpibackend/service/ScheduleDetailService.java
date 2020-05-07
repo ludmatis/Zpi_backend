@@ -32,4 +32,8 @@ public class ScheduleDetailService {
         return  scheduleDetailRepository.save(scheduleDetail);
     }
 
+    public void delete(ScheduleDetail scheduleDetail){
+         scheduleDetailRepository.delete(scheduleDetail);
+    }
+
 }

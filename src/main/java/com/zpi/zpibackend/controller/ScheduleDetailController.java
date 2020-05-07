@@ -51,6 +51,9 @@ public class ScheduleDetailController {
     @PostMapping("/add")
     public ResponseEntity addScheduleDetail(@RequestBody ScheduleDetailDto scheduleDetailDto){
         ScheduleDetail scheduleDetail = convertFromDto(scheduleDetailDto);
+        if(scheduleService.getById(scheduleDetailDto.getSchedule().getScheduleid()) == null){
+            return ResponseEntity.badRequest().body("Nie mozna dodac itemu do nieistniejącego harmonogramu");
+        }
         if(scheduleDetailService.add(scheduleDetail) == null){
             return ResponseEntity.badRequest().body("Cos poszlo nie tak przy dodawaniu");
         }
