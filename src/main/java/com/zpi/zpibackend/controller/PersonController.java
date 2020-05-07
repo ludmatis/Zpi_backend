@@ -62,6 +62,7 @@ public class PersonController {
             return ResponseEntity.badRequest().body("Podany email jest zajęty");
         }
         else{
+            personService.add(person);
             return new ResponseEntity<>(convertToDto(person), HttpStatus.OK);
         }
     }
