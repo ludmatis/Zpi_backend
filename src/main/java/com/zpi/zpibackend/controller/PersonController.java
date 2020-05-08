@@ -2,8 +2,12 @@ package com.zpi.zpibackend.controller;
 
 import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.google.gson.Gson;
+import com.zpi.zpibackend.entity.Event;
+import com.zpi.zpibackend.entity.Message;
 import com.zpi.zpibackend.entity.Person;
 import com.zpi.zpibackend.entity.dto.PersonDto;
+import com.zpi.zpibackend.service.EventService;
+import com.zpi.zpibackend.service.MessageService;
 import com.zpi.zpibackend.service.PersonService;
 import org.apache.coyote.Response;
 import org.modelmapper.ModelMapper;
@@ -13,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,6 +29,10 @@ public class PersonController {
 
     @Autowired
     private PersonService personService;
+    @Autowired
+    private EventService eventService;
+    @Autowired
+    private MessageService messageService;
     @Autowired
     private ModelMapper modelMapper;
 
@@ -84,6 +93,27 @@ public class PersonController {
 
     //TODO if entity contains list of other entities convertFromDTO needs to be updated
     private Person convertFromDto(PersonDto personDto){
-        return modelMapper.map(personDto, Person.class);
+        Person person = modelMapper.map(personDto, Person.class);
+
+        List<Event> allEvents = eventService.getAll();
+        List<Event> exactEvents = new ArrayList<>();
+        allEvents.forEach(event -> {
+            if(event.getCreator().getPersonid()==personDto.getPersonid())
+                exactEvents.add(event);
+        });
+        person.setEvents(allEvents);
+
+        List<Message> allMessages = messageService.getAll();
+        List<Message> receivedMessages = new ArrayList<>();
+        List<Message> sentMessages = new ArrayList<>();
+        allMessages.forEach(message -> {
+            if(message.getReceiver().getPersonid()==personDto.getPersonid())
+                receivedMessages.add(message);
+            if(message.getSender().getPersonid()==personDto.getPersonid())
+                sentMessages.add(message);
+        });
+        person.setMessages_received(receivedMessages);
+        person.setMessages_sent(sentMessages);
+        return person;
     }
 }
