@@ -1,6 +1,7 @@
 package com.zpi.zpibackend.service;
 
 import com.zpi.zpibackend.entity.Message;
+import com.zpi.zpibackend.entity.Person;
 import com.zpi.zpibackend.repository.MessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,14 @@ public class MessageService {
 
     public Message getById(Integer id){
         return messageRepository.findById(id).orElse(null);
+    }
+
+    public List<Message> getBySender(Person person){
+        return messageRepository.findBySender(person);
+    }
+
+    public List<Message> getByReceiver(Person person){
+        return messageRepository.findByReceiver(person);
     }
 
     public Message update(Message message){
