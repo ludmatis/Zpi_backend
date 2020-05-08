@@ -1,6 +1,7 @@
 package com.zpi.zpibackend.service;
 
 import com.zpi.zpibackend.entity.CostOrganizer;
+import com.zpi.zpibackend.entity.Event;
 import com.zpi.zpibackend.repository.CostOrganizerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,4 +30,7 @@ public class CostOrganizerService {
         return costOrganizerRepository.save(costOrganizer);
     }
 
+    public List<CostOrganizer> getByEvent(Event event) {
+        return costOrganizerRepository.findByEvent(event);
+    }
 }

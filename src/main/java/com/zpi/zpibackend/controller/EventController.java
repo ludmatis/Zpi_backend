@@ -118,7 +118,7 @@ public class EventController {
              event.setCreator(person);
         }
         if(eventDto.getAddress() != null){
-             address =  addressService.getById(eventDto.getAddress().getAddressid());
+            address =  addressService.getById(eventDto.getAddress().getAddressid());
             event.setAddress(address);
         }
 
