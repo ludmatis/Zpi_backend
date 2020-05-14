@@ -1,9 +1,5 @@
 package com.zpi.zpibackend.entity.dto;
 
-import com.zpi.zpibackend.entity.CostElement;
-import com.zpi.zpibackend.entity.CostOrganizer;
-
-
 public class CostElementDto {
 
     private Integer costelementid;
