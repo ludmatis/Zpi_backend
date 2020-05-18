@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 @RestController
@@ -57,6 +58,51 @@ public class EventDetailController {
             List<EventDetailDto> eventDetailDtos = eventDetails.stream().map(this::convertToDto).collect(Collectors.toList());
             return new ResponseEntity<>(eventDetailDtos,HttpStatus.OK);
 
+        }
+    }
+    @GetMapping("/getbyevent/{id}/{type}")
+    public ResponseEntity getByEventIdAndType(@PathVariable Integer id, @PathVariable String type){
+        Event event = eventService.getById(id);
+        if(event == null){
+            return ResponseEntity.badRequest().body("Event nie istnieje");
+        }
+        else{
+            List<EventDetail> eventDetails = eventDetailService.getByEvent(event);
+            if(eventDetails.isEmpty()){
+                return ResponseEntity.badRequest().body("Event bez detali");
+            }
+            else{
+                List<EventDetailDto> eventDetailDtos = eventDetails.stream().map(this::convertToDto).collect(Collectors.toList());
+                var eventDetailsByType = eventDetailDtos.stream().filter(x -> x.getType().equals(type)).collect(Collectors.toList());
+                if(eventDetailsByType.isEmpty()){
+                    return ResponseEntity.badRequest().body("Nie ma detali o podanym typie");
+                }
+                else{
+                    return new ResponseEntity<>(eventDetailsByType,HttpStatus.OK);
+                }
+            }
+        }
+    }
+    @GetMapping("getbyevent/{id}/{type}/{value}")
+    public ResponseEntity getByEventIdAndTypeAndValue(@PathVariable Integer id, @PathVariable String type, @PathVariable String value){
+        Event event = eventService.getById(id);
+        if(event == null){
+            return ResponseEntity.badRequest().body("Event nie istnieje");
+        }
+        else {
+            List<EventDetail> eventDetails = eventDetailService.getByEvent(event);
+            if (eventDetails.isEmpty()) {
+                return ResponseEntity.badRequest().body("Event bez detali");
+            } else {
+                List<EventDetailDto> eventDetailDtos = eventDetails.stream().map(this::convertToDto).collect(Collectors.toList());
+                var eventDetailsByTypeAndValue = eventDetailDtos.stream().filter(x -> x.getType().equals(type) && x.getValue().equals(value)).collect(Collectors.toList());
+                if (eventDetailsByTypeAndValue.isEmpty()) {
+                    return ResponseEntity.badRequest().body("Nie ma detali o podanym typie i wartości");
+                }
+                else{
+                   return new ResponseEntity<>(eventDetailsByTypeAndValue, HttpStatus.OK);
+                }
+            }
         }
     }
 

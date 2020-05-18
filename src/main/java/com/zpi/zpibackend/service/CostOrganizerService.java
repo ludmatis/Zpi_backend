@@ -30,7 +30,7 @@ public class CostOrganizerService {
         return costOrganizerRepository.save(costOrganizer);
     }
 
-    public List<CostOrganizer> getByEvent(Event event) {
+    public List<CostOrganizer> getByEvent(Event event){
         return costOrganizerRepository.findByEvent(event);
     }
 }

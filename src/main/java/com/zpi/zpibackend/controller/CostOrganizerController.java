@@ -27,72 +27,62 @@ public class CostOrganizerController {
     private ModelMapper modelMapper;
 
     @GetMapping("/all")
-    public ResponseEntity getAll(){
+    public List<CostOrganizerDto> getAll(){
         List<CostOrganizer> costOrganizers = costOrganizerService.getAll();
-        if(costOrganizers.isEmpty())
-            return ResponseEntity.badRequest().body("Nie istnieja żadne kosztorysy");
-        else{
-            List<CostOrganizerDto> costOrganizerDtos = costOrganizers.stream().map(this::convertToDto).collect(Collectors.toList());
-            return new ResponseEntity<>(costOrganizerDtos, HttpStatus.OK);
-        }
+        return costOrganizers.stream().map(this::convertToDto).collect(Collectors.toList());
     }
-
-    @GetMapping("get/{id}")
-    public ResponseEntity getById(@PathVariable Integer id){
-        CostOrganizer costOrganizer = costOrganizerService.getById(id);
-        if(costOrganizer == null)
-            return ResponseEntity.badRequest().body("Kosztorys nie istnieje");
-        else
-            return  new ResponseEntity<>(convertToDto(costOrganizer),HttpStatus.OK);
-    }
-
     @GetMapping("getbyevent/{id}")
-    public ResponseEntity getByEvent(@PathVariable Integer id){
+    public ResponseEntity getByEventId(@PathVariable Integer id){
         Event event = eventService.getById(id);
-        if(event == null)
-           return ResponseEntity.badRequest().body("Event nie istnieje");
+        if(event == null){
+            return ResponseEntity.badRequest().body("Podany event nie istnieje");
+        }
         else{
-            List<CostOrganizer> costOrganizers = costOrganizerService.getByEvent(event);
-            if(costOrganizers.isEmpty())
-                return ResponseEntity.badRequest().body("Event nie ma żadnych kosztorysów");
-            List<CostOrganizerDto> costOrganizerDtos = costOrganizers.stream().map(this::convertToDto).collect(Collectors.toList());
-            return new ResponseEntity<>(costOrganizerDtos,HttpStatus.OK);
+            List<CostOrganizer> organizers = costOrganizerService.getByEvent(event);
+            var organizersDto = organizers.stream().map(this::convertToDto).collect(Collectors.toList());
+            if(organizersDto.isEmpty()){
+                return ResponseEntity.badRequest().body("Event nie posiada kosztorysu");
+            }
+            else{
+                return new ResponseEntity<>(organizersDto, HttpStatus.OK);
+            }
         }
     }
 
     @PostMapping("/add")
-    public ResponseEntity add(@RequestBody CostOrganizerDto costOrganizerDto){
+    public ResponseEntity addCostOrganizer(@RequestBody CostOrganizerDto costOrganizerDto){
         CostOrganizer costOrganizer = convertFromDto(costOrganizerDto);
-        if(costOrganizerService.add(costOrganizer)==null)
-            return ResponseEntity.badRequest().body("Dodawanie nie powiodło się");
-        else
-            return new ResponseEntity<>(convertToDto(costOrganizer),HttpStatus.OK);
+        if(costOrganizerService.add(costOrganizer) == null){
+            return ResponseEntity.badRequest().body("Cos poszlo nie tak przy dodawaniu");
+        }
+        else{
+            return new ResponseEntity<>(convertToDto(costOrganizer), HttpStatus.OK);
+        }
     }
-
-    @PutMapping("/update/{id}")
+    @PutMapping("update/{id}")
     public ResponseEntity updateCostOrganizer(@RequestBody CostOrganizerDto costOrganizerDto, @PathVariable Integer id){
         CostOrganizer costOrganizer = costOrganizerService.getById(id);
         costOrganizerDto.setOrganizerid(id);
-        if(costOrganizer == null)
-            return  ResponseEntity.badRequest().body("Kosztorys nie istnieje");
+        if(costOrganizer== null){
+            return ResponseEntity.badRequest().body("Podany kosztorys nie istnieje");
+        }
         else{
-            CostOrganizer updated =costOrganizerService.update(convertFromDto(costOrganizerDto));
-            return  new ResponseEntity<>(convertToDto(updated),HttpStatus.OK);
+            CostOrganizer updated = costOrganizerService.update(convertFromDto(costOrganizerDto));
+            return new ResponseEntity<>(convertToDto(updated), HttpStatus.OK);
         }
     }
-
     private CostOrganizerDto convertToDto(CostOrganizer costOrganizer){
         return modelMapper.map(costOrganizer, CostOrganizerDto.class);
     }
 
+    //TODO as every convertFromDto
     private CostOrganizer convertFromDto(CostOrganizerDto costOrganizerDto){
         CostOrganizer costOrganizer = modelMapper.map(costOrganizerDto, CostOrganizer.class);
-
         Event event;
-        if(costOrganizer.getEvent() != null){
+        if(costOrganizer.getEvent()!= null){
             event = eventService.getById(costOrganizerDto.getEvent().getEventid());
             costOrganizer.setEvent(event);
         }
-        return costOrganizer;
+        return  costOrganizer;
     }
 }
