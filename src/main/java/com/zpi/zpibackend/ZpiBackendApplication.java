@@ -4,6 +4,7 @@ import com.zpi.zpibackend.controller.ToDoListController;
 import com.zpi.zpibackend.entity.*;
 import com.zpi.zpibackend.entity.composite_key.CompanyAddressId;
 import com.zpi.zpibackend.entity.composite_key.EventPersonId;
+import com.zpi.zpibackend.entity.dto.EventDetailDto;
 import com.zpi.zpibackend.entity.dto.EventDto;
 import com.zpi.zpibackend.entity.dto.ToDoListDto;
 import com.zpi.zpibackend.service.*;
@@ -49,7 +50,8 @@ public class ZpiBackendApplication implements CommandLineRunner {
 	private CostOrganizerService costOrganizerService;
 	@Autowired
 	private CostElementService costElementService;
-
+	@Autowired
+	private EventDetailService eventDetailService;
 	public static void main(String[] args) {
 		SpringApplication.run(ZpiBackendApplication.class, args);
 

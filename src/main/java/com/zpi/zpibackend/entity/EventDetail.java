@@ -1,5 +1,8 @@
 package com.zpi.zpibackend.entity;
 
+import org.hibernate.annotations.Type;
+import org.hibernate.type.BinaryType;
+
 import javax.persistence.*;
 
 @Entity(name = "eventdetail")
@@ -14,6 +17,9 @@ public class EventDetail {
     private Event event;
     private String type;
     private String value;
+    @Lob
+    @Type(type = "org.hibernate.type.BinaryType")
+    private byte[] image;
 
     public EventDetail() {
     }
@@ -55,5 +61,13 @@ public class EventDetail {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
     }
 }

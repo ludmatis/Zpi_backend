@@ -6,6 +6,7 @@ public class EventDetailDto {
     private EventDto event;
     private String type;
     private String value;
+    private byte[] image;
 
     public EventDetailDto() {
     }
@@ -40,5 +41,13 @@ public class EventDetailDto {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
     }
 }
