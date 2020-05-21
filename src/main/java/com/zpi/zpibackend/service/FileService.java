@@ -14,7 +14,7 @@ import java.nio.file.StandardCopyOption;
 public class FileService {
 
 
-    private final Path fileStorage = Paths.get("D:\\ZPI\\Files");
+    private final Path fileStorage = Paths.get("D:/ZPI/Files");
 
     public String save(MultipartFile file) {
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
@@ -25,6 +25,8 @@ public class FileService {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return String.valueOf(targetLocation);
+        String path = targetLocation.toString();
+        path = path.replace("\\","/");
+        return path;
     }
 }

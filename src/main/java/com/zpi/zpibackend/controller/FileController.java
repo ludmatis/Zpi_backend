@@ -22,15 +22,10 @@ public class FileController {
     private FileService fileService;
     @Autowired
     private ModelMapper modelMapper;
-    private static final Gson gson = new Gson();
 
-    @GetMapping
-    public ResponseEntity getFile()
-    {
-       return null;
-    }
 
-    @PostMapping(value = "/upload", produces = MediaType.APPLICATION_JSON_VALUE)
+
+    @PostMapping(value = "/upload")
     public ResponseEntity uploadFile(@RequestParam("file") MultipartFile file){
 
         File response = new File();
