@@ -2,7 +2,6 @@ package com.zpi.zpibackend.entity;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
 
 @Entity(name = "costorganizer")
 public class CostOrganizer {
@@ -16,9 +15,6 @@ public class CostOrganizer {
     private Event event;
     private String title;
     private Date createon;
-
-    @OneToMany(mappedBy = "costOrganizer")
-    private List<CostElement> costElements;
 
     public CostOrganizer() {
     }
