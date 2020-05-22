@@ -14,7 +14,7 @@ import java.nio.file.StandardCopyOption;
 public class FileService {
 
 
-    private final Path fileStorage = Paths.get("D:/ZPI/Files");
+    private final Path fileStorage = Paths.get("C:\\Users\\Student242500\\projects\\OrganizacjaImprez\\organizacja_imprez\\src\\images");
 
     public String save(MultipartFile file) {
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
