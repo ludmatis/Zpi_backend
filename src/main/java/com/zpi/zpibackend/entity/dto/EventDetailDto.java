@@ -6,7 +6,7 @@ public class EventDetailDto {
     private EventDto event;
     private String type;
     private String value;
-    private byte[] image;
+    private String image;
 
     public EventDetailDto() {
     }
@@ -43,11 +43,11 @@ public class EventDetailDto {
         this.value = value;
     }
 
-    public byte[] getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(byte[] image) {
+    public void setImage(String image) {
         this.image = image;
     }
 }

@@ -18,8 +18,7 @@ public class EventDetail {
     private String type;
     private String value;
     @Lob
-    @Type(type = "org.hibernate.type.BinaryType")
-    private byte[] image;
+    private String image;
 
     public EventDetail() {
     }
@@ -63,11 +62,11 @@ public class EventDetail {
         this.value = value;
     }
 
-    public byte[] getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(byte[] image) {
+    public void setImage(String image) {
         this.image = image;
     }
 }
