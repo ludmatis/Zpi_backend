@@ -14,22 +14,29 @@ public class EventDetailService {
     @Autowired
     private EventDetailRepository eventDetailRepository;
 
-    public EventDetail add(EventDetail eventDetail){
+    public EventDetail add(EventDetail eventDetail) {
         return eventDetailRepository.save(eventDetail);
     }
 
-    public List<EventDetail> getAll(){
+    public List<EventDetail> getAll() {
         return (List<EventDetail>) eventDetailRepository.findAll();
     }
 
-    public EventDetail getById(Integer id){
+    public EventDetail getById(Integer id) {
         return eventDetailRepository.findById(id).orElse(null);
     }
 
-    public EventDetail update(EventDetail eventDetail){
+    public EventDetail update(EventDetail eventDetail) {
         return eventDetailRepository.save(eventDetail);
     }
 
+    public void delete(Integer id) {
+        EventDetail eventDetail = eventDetailRepository.findById(id).orElse(null);
+        if (eventDetail != null) {
+
+            eventDetailRepository.delete(eventDetail);
+        }
+    }
 
     public List<EventDetail> getByEvent(Event event) {
         return eventDetailRepository.findByEvent(event);

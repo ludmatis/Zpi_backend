@@ -135,6 +135,19 @@ public class EventDetailController {
     }
 
 
+    @DeleteMapping("delete/{id}")
+    public ResponseEntity deleteEventDetail(@PathVariable Integer id){
+        EventDetail eventDetail = eventDetailService.getById(id);
+        if(eventDetail == null){
+            return ResponseEntity.badRequest().body("Event detail nie istnieje");
+        }
+        else{
+            Event event = eventService.getById(eventDetail.getEvent().getEventid());
+            event.getEventDetails().remove(eventDetail);
+            eventDetailService.delete(id);
+            return ResponseEntity.accepted().body("Usunięto event detail");
+        }
+    }
     private EventDetail convertFromDto(EventDetailDto eventDetailDto){
         EventDetail eventDetail = modelMapper.map(eventDetailDto, EventDetail.class);
         Event event;
