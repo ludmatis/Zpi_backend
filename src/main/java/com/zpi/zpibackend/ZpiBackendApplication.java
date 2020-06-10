@@ -79,7 +79,7 @@ public class ZpiBackendApplication implements CommandLineRunner {
 
 		ToDoList toDoList = new ToDoList(1, event,"kozaktytyl");
 		toDoListService.add(toDoList);
-		toDoListTaskService.add(new ToDoListTask(1, toDoList,"jakisopis",new Date(12321,1,23), new Date(3231,1,1)));
+		//toDoListTaskService.add(new ToDoListTask(1, toDoList,"jakisopis",new Date(12321,1,23), new Date(3231,1,1)));
 
 		Schedule schedule = new Schedule(1, event, "ale schedule");
 		scheduleService.add(schedule);

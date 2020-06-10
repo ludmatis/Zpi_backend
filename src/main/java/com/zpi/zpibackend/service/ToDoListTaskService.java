@@ -1,5 +1,6 @@
 package com.zpi.zpibackend.service;
 
+import com.zpi.zpibackend.entity.EventPerson;
 import com.zpi.zpibackend.entity.ToDoList;
 import com.zpi.zpibackend.entity.ToDoListTask;
 import com.zpi.zpibackend.repository.ToDoListTaskRepository;
@@ -31,4 +32,10 @@ public class ToDoListTaskService {
     }
 
     public List<ToDoListTask> getByToDoList(ToDoList toDoList) { return toDoListTaskRepository.findByToDoList(toDoList); }
+
+    public List<ToDoListTask> getByParent(ToDoListTask toDoListTask) { return toDoListTaskRepository.findByParent(toDoListTask);
+    }
+
+    public List<ToDoListTask> getByEventPerson(EventPerson eventPerson) { return toDoListTaskRepository.findByExecutor(eventPerson);
+    }
 }

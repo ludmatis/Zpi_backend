@@ -1,5 +1,6 @@
 package com.zpi.zpibackend.repository;
 
+import com.zpi.zpibackend.entity.EventPerson;
 import com.zpi.zpibackend.entity.ToDoList;
 import com.zpi.zpibackend.entity.ToDoListTask;
 import org.springframework.data.repository.CrudRepository;
@@ -10,4 +11,6 @@ import java.util.List;
 @Repository
 public interface ToDoListTaskRepository extends CrudRepository<ToDoListTask, Integer> {
     List<ToDoListTask> findByToDoList(ToDoList toDoList);
+    List<ToDoListTask> findByParent(ToDoListTask parent);
+    List<ToDoListTask> findByExecutor(EventPerson executor);
 }

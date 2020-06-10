@@ -1,6 +1,7 @@
 package com.zpi.zpibackend.entity.dto;
 
 import com.zpi.zpibackend.entity.ToDoList;
+import com.zpi.zpibackend.entity.ToDoListTask;
 
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -12,6 +13,8 @@ public class ToDoListTaskDto {
 
     private Integer taskid;
     private ToDoListDto toDoList;
+    private ToDoListTaskDto parent;
+    private EventPersonDto executor;
     private String description;
     private Date timestart;
     private Date timeend;
@@ -57,5 +60,21 @@ public class ToDoListTaskDto {
 
     public void setTimeend(Date timeend) {
         this.timeend = timeend;
+    }
+
+    public ToDoListTaskDto getParent() {
+        return parent;
+    }
+
+    public void setParent(ToDoListTaskDto parent) {
+        this.parent = parent;
+    }
+
+    public EventPersonDto getExecutor() {
+        return executor;
+    }
+
+    public void setExecutor(EventPersonDto executor) {
+        this.executor = executor;
     }
 }

@@ -2,6 +2,7 @@ package com.zpi.zpibackend.entity;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity(name = "todolisttask")
 public class ToDoListTask {
@@ -13,6 +14,17 @@ public class ToDoListTask {
     @ManyToOne
     @JoinColumn(name = "todolistid")
     private ToDoList toDoList;
+    @OneToMany(mappedBy = "parent")
+    private List<ToDoListTask> toDoListTasks;
+    @ManyToOne
+    @JoinColumn(name = "parentid")
+    private ToDoListTask parent;
+    @ManyToOne
+    @JoinColumns({
+            @JoinColumn(name = "personid"),
+            @JoinColumn(name = "eventid")
+    } )
+    private EventPerson executor;
     private String description;
     private Date timestart;
     private Date timeend;
@@ -20,9 +32,10 @@ public class ToDoListTask {
     public ToDoListTask() {
     }
 
-    public ToDoListTask(Integer taskid, ToDoList toDoList, String description, Date timestart, Date timeend) {
+    public ToDoListTask(Integer taskid, ToDoList toDoList, EventPerson executor, String description, Date timestart, Date timeend) {
         this.taskid = taskid;
         this.toDoList = toDoList;
+        this.executor = executor;
         this.description = description;
         this.timestart = timestart;
         this.timeend = timeend;
@@ -66,5 +79,29 @@ public class ToDoListTask {
 
     public void setTimeend(Date timeend) {
         this.timeend = timeend;
+    }
+
+    public List<ToDoListTask> getToDoListTasks() {
+        return toDoListTasks;
+    }
+
+    public void setToDoListTasks(List<ToDoListTask> toDoListTasks) {
+        this.toDoListTasks = toDoListTasks;
+    }
+
+    public ToDoListTask getParent() {
+        return parent;
+    }
+
+    public void setParent(ToDoListTask parent) {
+        this.parent = parent;
+    }
+
+    public EventPerson getExecutor() {
+        return executor;
+    }
+
+    public void setExecutor(EventPerson executor) {
+        this.executor = executor;
     }
 }
