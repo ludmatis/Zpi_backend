@@ -26,4 +26,7 @@ public class EventPersonService {
     public EventPerson getByEventId(Integer eventid){
         return eventPersonRepository.findById(eventid).orElse(null);
     }
+
+    public EventPerson update(EventPerson eventPerson) { return eventPersonRepository.save(eventPerson);
+    }
 }
