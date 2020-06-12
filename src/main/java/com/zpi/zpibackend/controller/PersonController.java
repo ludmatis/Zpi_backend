@@ -64,6 +64,17 @@ public class PersonController {
         else return ResponseEntity.badRequest().body("Złe hasło");
 
     }
+    @GetMapping("/getbyemail/{email}")
+    public ResponseEntity getPersonByEmail(@PathVariable String email){
+        Person person = personService.getByEmail(email);
+        if(person == null){
+            return ResponseEntity.badRequest().body("Uzytkownik z takim mailem nie istnieje");
+        }
+        else{
+            return new ResponseEntity<>(convertToDto(person), HttpStatus.OK);
+        }
+    }
+
     @PostMapping("/add")
     public ResponseEntity addPerson(@RequestBody PersonDto personDto){
         Person person = convertFromDto(personDto);

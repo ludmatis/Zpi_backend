@@ -57,7 +57,7 @@ public class ZpiBackendApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		roleService.add(new Role(2,"Zarządca"));
+		/*roleService.add(new Role(2,"Zarządca"));
 		CompanyType companyType = new CompanyType(2,"ochrona");
 		companyTypeService.add(companyType);
 		companyService.add(new Company(1,companyType, "firma", "email","ok","ok"));
@@ -96,7 +96,7 @@ public class ZpiBackendApplication implements CommandLineRunner {
 		costOrganizerService.add(costOrganizer);
 		costElementService.add(costElement);
 		costElementService.add(costElement1);
-
+	*/
 
 
 	}
