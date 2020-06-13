@@ -29,4 +29,8 @@ public class EventPersonService {
 
     public EventPerson update(EventPerson eventPerson) { return eventPersonRepository.save(eventPerson);
     }
+
+    public void delete(EventPerson eventPerson){
+        eventPersonRepository.delete(eventPerson);
+    }
 }

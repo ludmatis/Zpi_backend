@@ -73,6 +73,18 @@ public class EventPersonController {
             return new ResponseEntity<>(convertToDto(updated),HttpStatus.OK);
         }
     }
+    @DeleteMapping("delete/{personid}/{eventid}")
+    public ResponseEntity deleteEventPerson(@PathVariable(value = "personid") Integer personId, @PathVariable(value = "eventid") Integer eventId){
+        EventPersonId eventPersonId = new EventPersonId(personId,eventId);
+        EventPerson eventPerson = eventPersonService.getById(eventPersonId);
+        if(eventPerson == null){
+            return ResponseEntity.badRequest().body("Event person nieistnieje");
+        }
+        else{
+            eventPersonService.delete(eventPerson);
+            return ResponseEntity.ok().body("Event person usuniete");
+        }
+    }
 
     private EventPersonDto convertToDto(EventPerson eventPerson){
         return modelMapper.map(eventPerson, EventPersonDto.class);
