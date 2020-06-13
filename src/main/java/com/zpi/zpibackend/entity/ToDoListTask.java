@@ -28,6 +28,9 @@ public class ToDoListTask {
     private String description;
     private Date timestart;
     private Date timeend;
+    private String name;
+    private Boolean done;
+    private Integer priority;
 
     public ToDoListTask() {
     }
@@ -103,5 +106,29 @@ public class ToDoListTask {
 
     public void setExecutor(EventPerson executor) {
         this.executor = executor;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Boolean getDone() {
+        return done;
+    }
+
+    public void setDone(Boolean done) {
+        this.done = done;
+    }
+
+    public Integer getPriority() {
+        return priority;
+    }
+
+    public void setPriority(Integer priority) {
+        this.priority = priority;
     }
 }
