@@ -38,4 +38,8 @@ public class ToDoListTaskService {
 
     public List<ToDoListTask> getByEventPerson(EventPerson eventPerson) { return toDoListTaskRepository.findByExecutor(eventPerson);
     }
+
+    public void delete(ToDoListTask toDoListTask){
+        toDoListTaskRepository.delete(toDoListTask);
+    }
 }

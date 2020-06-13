@@ -120,6 +120,17 @@ public class ToDoListTaskController {
         }
     }
 
+    @DeleteMapping("delete/{id}")
+    public ResponseEntity deleteToDoListTask(@PathVariable Integer id){
+        ToDoListTask toDoListTask = toDoListTaskService.getById(id);
+        if(toDoListTask == null){
+            return ResponseEntity.badRequest().body("Zadanie o podanym id nie istnieje");
+        }
+        else{
+            toDoListTaskService.delete(toDoListTask);
+            return ResponseEntity.ok().body("Zadanie usunieto");
+        }
+    }
     private ToDoListTaskDto convertToDto(ToDoListTask toDoListTask){
         return modelMapper.map(toDoListTask, ToDoListTaskDto.class);
     }
