@@ -22,10 +22,6 @@ public class Role {
         this.rolename = rolename;
     }
 
-    public Role(String roleName) {
-        this.rolename = roleName;
-    }
-
     public Integer getRoleid() {
         return roleid;
     }
