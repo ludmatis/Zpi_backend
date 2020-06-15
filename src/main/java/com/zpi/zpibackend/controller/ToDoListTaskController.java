@@ -66,7 +66,7 @@ public class ToDoListTaskController {
         }
     }
 
-    @GetMapping("/getbyexecutor/{personid}/{eventid}")
+    @GetMapping("/getbyexecutor/{eventid}/{personid}")
     public ResponseEntity getToDoListTasksByExecutor(@PathVariable(value = "personid") Integer personId, @PathVariable(value = "eventid") Integer eventId) {
         EventPersonId eventPersonId = new EventPersonId(personId,eventId);
         EventPerson eventPerson = eventPersonService.getById(eventPersonId);
