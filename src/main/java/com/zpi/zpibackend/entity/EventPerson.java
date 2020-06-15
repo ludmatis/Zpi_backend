@@ -2,10 +2,8 @@ package com.zpi.zpibackend.entity;
 
 import com.zpi.zpibackend.entity.composite_key.EventPersonId;
 
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity(name = "eventperson")
 public class EventPerson {
@@ -15,6 +13,8 @@ public class EventPerson {
     @ManyToOne
     @JoinColumn(name = "roleid")
     private Role role;
+    @OneToMany(mappedBy = "executor")
+    private List<ToDoListTask> toDoListTasks;
 
     public EventPerson() {
     }
@@ -42,5 +42,13 @@ public class EventPerson {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public List<ToDoListTask> getToDoListTasks() {
+        return toDoListTasks;
+    }
+
+    public void setToDoListTasks(List<ToDoListTask> toDoListTasks) {
+        this.toDoListTasks = toDoListTasks;
     }
 }

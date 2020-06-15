@@ -21,8 +21,8 @@ public class ToDoListTask {
     private ToDoListTask parent;
     @ManyToOne
     @JoinColumns({
-            @JoinColumn(name = "personid"),
-            @JoinColumn(name = "eventid")
+            @JoinColumn(name = "eventid"),
+            @JoinColumn(name = "personid")
     } )
     private EventPerson executor;
     private String description;
