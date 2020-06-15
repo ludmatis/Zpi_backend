@@ -97,7 +97,10 @@ public class ToDoListController {
         }
         else{
             var todolisttasks = toDoList.getToDoListTasks();
-            todolisttasks.forEach(toDoListTask -> toDoListTaskService.delete(toDoListTask));
+            var toDoListTasksWithParents = todolisttasks.stream().filter(toDoListTask -> toDoListTask.getParent()!=null);
+            var toDoListTasksWithoutParents = todolisttasks.stream().filter(toDoListTask -> toDoListTask.getParent()==null);
+            toDoListTasksWithParents.forEach(toDoListTask -> toDoListTaskService.delete(toDoListTask));
+            toDoListTasksWithoutParents.forEach(toDoListTask -> toDoListTaskService.delete(toDoListTask));
             return ResponseEntity.ok().body("Usunieto wszystkie zadania");
         }
     }
