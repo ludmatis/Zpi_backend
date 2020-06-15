@@ -38,9 +38,9 @@ public class EventPersonController {
         }
     }
 
-    @GetMapping("/get/{personid}/{eventid}")
+    @GetMapping("/get/{eventid}/{personid}")
     public ResponseEntity getById(@PathVariable(value = "personid") Integer personId, @PathVariable(value = "eventid") Integer eventId){
-        EventPersonId eventPersonId = new EventPersonId(personId,eventId);
+        EventPersonId eventPersonId = new EventPersonId(eventId,personId);
         EventPerson eventPerson = eventPersonService.getById(eventPersonId);
         if(eventPerson == null){
             return ResponseEntity.badRequest().body("Event person nieistnieje");
@@ -58,11 +58,11 @@ public class EventPersonController {
             return new ResponseEntity<>(convertToDto(eventPerson),HttpStatus.OK);
     }
 
-    @PutMapping("/update/{personid}/{eventid}")
+    @PutMapping("/update/{eventid}/{personid}")
     public ResponseEntity updateEventPerson(@RequestBody EventPersonDto eventPersonDto,
                                             @PathVariable(value = "personid") Integer personId,
                                             @PathVariable(value = "eventid") Integer eventId){
-        EventPersonId eventPersonId = new EventPersonId(personId,eventId);
+        EventPersonId eventPersonId = new EventPersonId(eventId,personId);
         EventPerson eventPerson = eventPersonService.getById(eventPersonId);
         eventPersonDto.setEventPersonId(eventPersonId);
         if(eventPerson == null){
@@ -73,9 +73,9 @@ public class EventPersonController {
             return new ResponseEntity<>(convertToDto(updated),HttpStatus.OK);
         }
     }
-    @DeleteMapping("delete/{personid}/{eventid}")
+    @DeleteMapping("delete/{eventid}/{personid}")
     public ResponseEntity deleteEventPerson(@PathVariable(value = "personid") Integer personId, @PathVariable(value = "eventid") Integer eventId){
-        EventPersonId eventPersonId = new EventPersonId(personId,eventId);
+        EventPersonId eventPersonId = new EventPersonId(eventId,personId);
         EventPerson eventPerson = eventPersonService.getById(eventPersonId);
         if(eventPerson == null){
             return ResponseEntity.badRequest().body("Event person nieistnieje");
