@@ -89,6 +89,19 @@ public class ToDoListController {
         }
     }
 
+    @DeleteMapping("/deletetasks/{id}")
+    public ResponseEntity deleteTasks(@PathVariable Integer id){
+        ToDoList toDoList = toDoListService.getById(id);
+        if(toDoList==null){
+            return ResponseEntity.badRequest().body("Lista o takim id nie istnieje");
+        }
+        else{
+            var todolisttasks = toDoList.getToDoListTasks();
+            todolisttasks.forEach(toDoListTask -> toDoListTaskService.delete(toDoListTask));
+            return ResponseEntity.ok().body("Usunieto wszystkie zadania");
+        }
+    }
+
     public ToDoListDto convertToDto(ToDoList toDoList){
         return modelMapper.map(toDoList, ToDoListDto.class);
     }
