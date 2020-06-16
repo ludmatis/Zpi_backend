@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.springframework.http.ResponseEntity.notFound;
-
+@CrossOrigin()
 @RestController
 @RequestMapping("/person")
 public class PersonController {
