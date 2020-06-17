@@ -45,6 +45,8 @@ public class EventService {
     }
 
     public void delete(Event event){
+        var toDoLists = toDoListService.geByEvent(event);
+        toDoLists.forEach(toDoList -> toDoListService.delete(toDoList));
         var eventPeople = eventPersonService.getAll();
         var properEventPersons = eventPeople.stream().filter(x -> x.getEventPersonId().getEventid() == event.getEventid());
         properEventPersons.forEach(eventPerson -> eventPersonService.delete(eventPerson));
@@ -52,8 +54,6 @@ public class EventService {
         costOrganizers.forEach(costOrganizer -> costOrganizerService.delete(costOrganizer));
         var schedules = scheduleService.getByEvent(event);
         schedules.forEach(schedule -> scheduleService.delete(schedule));
-        var toDoLists = toDoListService.geByEvent(event);
-        toDoLists.forEach(toDoList -> toDoListService.delete(toDoList));
         eventRepository.delete(event);
     }
 
