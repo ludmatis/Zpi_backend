@@ -1,7 +1,11 @@
 package com.zpi.zpibackend.entity;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity(name = "costorganizer")
 public class CostOrganizer {
@@ -15,6 +19,9 @@ public class CostOrganizer {
     private Event event;
     private String title;
     private Date createon;
+    @OneToMany(mappedBy = "costOrganizer")
+    private List<CostElement> costElements;
+
 
     public CostOrganizer() {
     }
@@ -56,5 +63,13 @@ public class CostOrganizer {
 
     public void setCreateon(Date createon) {
         this.createon = createon;
+    }
+
+    public List<CostElement> getCostElements() {
+        return costElements;
+    }
+
+    public void setCostElements(List<CostElement> costElements) {
+        this.costElements = costElements;
     }
 }

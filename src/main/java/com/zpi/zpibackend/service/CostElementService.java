@@ -36,4 +36,7 @@ public class CostElementService {
     public List<CostElement> getByParent(CostElement costElement){
         return costElementRepository.findByParent(costElement);
     }
+    public void delete(CostElement costElement){
+        costElementRepository.delete(costElement);
+    }
 }

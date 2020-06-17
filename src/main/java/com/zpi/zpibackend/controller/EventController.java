@@ -35,7 +35,8 @@ public class EventController {
     private AddressService addressService;
     @Autowired
     private ModelMapper modelMapper;
-
+    @Autowired
+    private EventPersonService eventPersonService;
     @GetMapping("/all")
     public ResponseEntity getAll(){
         List<Event> events = eventService.getAll();
@@ -101,6 +102,18 @@ public class EventController {
                 Event updated = eventService.update(convertFromDto(eventDto));
                 return new ResponseEntity<>(convertToDto(updated), HttpStatus.OK);
             }
+        }
+        @DeleteMapping("/delete/{id}")
+        public ResponseEntity deleteEvent(@PathVariable Integer id){
+        Event event = eventService.getById(id);
+        if(event == null){
+            return ResponseEntity.badRequest().body("Nie ma takiego wydarzenia");
+        }
+        else{
+
+            eventService.delete(event);
+            return ResponseEntity.ok().body("Usunieto wydarzenie");
+        }
         }
 
 

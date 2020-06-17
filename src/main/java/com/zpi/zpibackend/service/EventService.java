@@ -14,6 +14,14 @@ public class EventService {
 
     @Autowired
     private EventRepository eventRepository;
+    @Autowired
+    private EventPersonService eventPersonService;
+    @Autowired
+    private ToDoListService toDoListService;
+    @Autowired
+    private ScheduleService scheduleService;
+    @Autowired
+    private CostOrganizerService costOrganizerService;
 
     public Event add(Event event) {
         return eventRepository.save(event);
@@ -34,6 +42,19 @@ public class EventService {
 
     public List<Event> getByCreator(Person person){
         return eventRepository.findByCreator(person);
+    }
+
+    public void delete(Event event){
+        var eventPeople = eventPersonService.getAll();
+        var properEventPersons = eventPeople.stream().filter(x -> x.getEventPersonId().getEventid() == event.getEventid());
+        properEventPersons.forEach(eventPerson -> eventPersonService.delete(eventPerson));
+        var costOrganizers = costOrganizerService.getByEvent(event);
+        costOrganizers.forEach(costOrganizer -> costOrganizerService.delete(costOrganizer));
+        var schedules = scheduleService.getByEvent(event);
+        schedules.forEach(schedule -> scheduleService.delete(schedule));
+        var toDoLists = toDoListService.geByEvent(event);
+        toDoLists.forEach(toDoList -> toDoListService.delete(toDoList));
+        eventRepository.delete(event);
     }
 
 }

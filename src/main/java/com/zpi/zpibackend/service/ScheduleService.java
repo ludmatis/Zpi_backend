@@ -13,6 +13,7 @@ public class ScheduleService {
 
     @Autowired
     private ScheduleRepository scheduleRepository;
+    @Autowired ScheduleDetailService scheduleDetailService;
 
     public Schedule add(Schedule schedule){
         return scheduleRepository.save(schedule);
@@ -30,5 +31,10 @@ public class ScheduleService {
     }
     public List<Schedule> getByEvent(Event event){
         return scheduleRepository.findByEvent(event);
+    }
+    public void delete(Schedule schedule){
+        var scheduleDetails = schedule.getScheduleDetails();
+        scheduleDetails.forEach(scheduleDetail -> scheduleDetailService.delete(scheduleDetail));
+        scheduleRepository.delete(schedule);
     }
 }

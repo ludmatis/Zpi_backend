@@ -1,5 +1,9 @@
 package com.zpi.zpibackend.entity.dto;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
+
 public class EventDto {
 
     private Integer eventid;
